@@ -4,9 +4,9 @@ function ISR = loaddata_EISCAT_cdt(dn)
 global datasetinfo
 
 try
-    root_dir_data = datasetinfo.EISCAT.root_dir;
+    dir_data = datasetinfo.EISCAT.dir_data;
 catch
-    root_dir_data = '';
+    dir_data = '';
 end
 
 try
@@ -36,30 +36,59 @@ end
 try
     filemode = datasetinfo.EISCAT.filemode;
 catch
-    filemode = 'autoselect';
+    filemode = 'EISCAT_cdt';    % autoselect, EISCAT_cdt, manual
 end
 
-if strcmp(filemode,  'autoselect')
-    if isempty(root_dir_data)
+
+
+if strcmp(filemode,  'EISCAT_cdt')
+    if isempty(dir_data)
         pwd1=pwd;
         cd ..
-        fp_root=[pwd '/Data/EISCAT/RESULTS/'];
+        fp_root=[pwd '/EISCAT_cdt/dat_cmb/'];
         cd(pwd1)
+    end
+    
+    if strcmp(sitename, 'UHF')
+        sitename = 'TRO';
     end
 
     dstr = datestr(dn, 'yyyymmdd');
 
     dstr1 = datestr(dn, 'yyyymm');
 
-    flist = dir([fp_root  '/TRO'  dstr1 '/*.mat']);
+    flist = dir([fp_root  '/' sitename '/'  dstr1 '/*.mat']);
     fnlist = {flist.name};
-    ix = regexp(fnlist, ['TRO_' dstr '_cmb']);
+    ix = regexp(fnlist, [sitename '_' dstr '_cmb']);
     ix = ~cellfun('isempty', ix);
     fn = fnlist(ix);
 
-    fpfn = fullfile(fp_root, ['TRO' dstr1], fn{1});
+    fpfn = fullfile(fp_root, [sitename dstr1], fn{1});
     eval(['load ' fpfn]);
+elseif strcmp(filemode, 'autoselect')
+    if isempty(dir_data)
+        fp_root=['/kaappi/EISCAT/RESULTS/'];
+    end
+    
+    yystr = datestr(dn, 'yyyy');
+    fs = dir([fp_root '/res_' yystr '_OY']);
+    ind_subdir = [fs.isdir];
+    fps = {fs(ind_subdir).name};
+    ix = regexp(fps, [datestr(dn, 'yyyy-mm-dd') '_' pulsecode]);
+    ix = ~cellfun('isempty', ix);
+    fps = fps(ix);
+    ix = regexp(fps, lower(sitename));
+    ix = ~cellfun('isempty', ix);
+    fps = fps(ix);
+    
+elseif strcmp(filemode, 'manual')
+    filterSpec=[pwd '/*.mat'];
+    [filenamein,pathname]=uigetfile(filterSpec,'Select any file in the wanted DIRECTORY');
+    if filenamein==0; return, end
+    nfd=1;
+    fp=pathname;
 end
+    
 
 %ind=find(abs(az-186.2)<1 & abs(el-77.5)<1);
   ind=1:size(n_e,2);
