@@ -10,7 +10,7 @@ Matlab package to generate quicklook plots for the EISCAT analyzed results.
 ## Usage
 * Modify settings in viewEISCAT*.m
 * Run "viewEISCAT*.m"
-* In "manual" mode, select the directory contains analyzed results
+* In "manual" mode, select the directory where the GUISDAP analyzed results are stored.
 * Check the figure.
 * Figure is saved in results/
 
