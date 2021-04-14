@@ -89,7 +89,9 @@ elseif strcmp(filemode, 'autoselect')
     datasetinfo.EISCAT.sitename = fn_site;
 elseif strcmp(filemode, 'manual')
     filterSpec=[pwd '/*.mat'];
-    [filenamein,pathname]=uigetfile(filterSpec,'Select any file in the wanted DIRECTORY');
+    [filenamein,pathname]=uigetfile(filterSpec,         ... 
+        [datestr(dn, 'yyyy-mm-dd')  ...
+         ',Select any *.mat file in the GUISDAP result folder:']);
     if filenamein==0; return, end
     nfd=1;
     fp=pathname;

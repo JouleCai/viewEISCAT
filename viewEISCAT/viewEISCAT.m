@@ -14,16 +14,12 @@ if isempty(varargin)
   datasetinfo=[];
   
   % Project name which is shown in the data file name
-  datasetinfo.projname='EISCAT/Swarm';
+  datasetinfo.projname='EISCAT';
   
   % Set EISCAT experiment time range
   dt_fr = datenum([2021 02 09 00 00 00]);
   dt_to = datenum([2021 02 09 05 00 00]);
   datelist=getdatelist(1, dt_fr, dt_to);
-  
-  % Set Swarm pass time
-  dt_swarm = datenum([2021 02 09 04 06 00]);
-  drawopt.addlines = add_swarm_overpass(dt_swarm)
     
   
   % set the mode to select the analyzed results: "manual" - a dialog box
@@ -41,7 +37,7 @@ if isempty(varargin)
   
   % Set plotting pannels
   drawopt.order={1, 2, 3, 4}; % order of the panels to show in the figure for the parameters in datasetinfo.paralist
-  % drawopt.plottype=nan(size(drawopt.order));
+  drawopt.plottype=nan(size(drawopt.order));
   drawopt.visual='on';
   drawopt.figureclose=0; % 0 - keep fig in screen; 1- close figure after saving
   drawopt.figure.position=[1 1 20 25];
@@ -149,6 +145,12 @@ function [dns]=getdnlist(id)
     dns=datenum(C{1},'yyyymmdd');
   end
   
+end
+
+function lines = add_swarm_overpass(dt)
+    h24 = (dt -floor(dt))*24;
+    lines = {0,[h24 h24],NaN,   ...
+        struct('LineStyle', '--', 'LineWidth', 2, 'Color',[0.8 0 0])};
 end
 
 function lines=getadditionallines(varargin)
