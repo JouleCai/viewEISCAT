@@ -17,4 +17,4 @@ Matlab package to generate quicklook plots for the EISCAT analyzed results.
 ## Notes
 * GUISDAP analyzed results can be downloaded from http://portal.eiscat.se/schedule/schedule.cgi.
 * Or local GUISDAP output.
-* "viewEISCAT_with_swarm_overpasses.m" will show the EISCAT plots overlayed with a vertical line, which indicates the time of SWARM overpasses.
+* "viewEISCAT_with_swarm_overpasses.m" will show the EISCAT plots overlayed with a vertical line, which indicates the time of the SWARM overpass.
