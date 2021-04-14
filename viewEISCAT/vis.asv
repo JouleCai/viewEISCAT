@@ -739,8 +739,7 @@ if isfield(drawopt,'addlines')
     if ind_ha==0
       hal=axes('position',[ha(end).Position(1:3)    ...
         ha(1).Position(2)-ha(end).Position(2)+ha(1).Position(4)]);
-      hal.Position(2) = hal.Position(2) -0.04;
-      hal.Position(4) = hal.Position(4) + 0.08;
+      hal(2) = hal
       hal.XLim=ha(1).XLim;
       hal.YLim=ha(1).YLim;
     else

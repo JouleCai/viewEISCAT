@@ -115,23 +115,27 @@ end
   ne(ind2)=nan;
   ti(ind2)=nan;
   te(ind2)=nan;
+  vel(ind2) = nan;
   
-  ind3=find(resid>10);
-  ne(ind3)=nan;
-  ti(ind3)=nan;
-  te(ind3)=nan;
+%   ind3=find(resid>10);
+%   ne(ind3)=nan;
+%   ti(ind3)=nan;
+%   te(ind3)=nan;
+%   vel(ind3) = nan;
   
-  ind4=find(ti_err./ti>1);
-  ne(ind4)=nan;
-  ti(ind4)=nan;
-  te(ind4)=nan;
-  
-  % T_i < 50 K? velocity is not independent from other fittings, bad ion
-  % velocity may be related to wired temperature
-    ind4=find(ti>2500);
-  ne(ind4)=nan;
-  ti(ind4)=nan;
-  te(ind4)=nan;
+%   ind4=find(ti_err./ti>1);
+%   ne(ind4)=nan;
+%   ti(ind4)=nan;
+%   te(ind4)=nan;
+%   vel(ind4) = nan;
+%   
+%   % T_i < 50 K? velocity is not independent from other fittings, bad ion
+%   % velocity may be related to wired temperature
+%     ind4=find(ti>2500);
+%   ne(ind4)=nan;
+%   ti(ind4)=nan;
+%   te(ind4)=nan;
+%   vel(ind4)=nan;
   
   
   t1=datenum(t1');

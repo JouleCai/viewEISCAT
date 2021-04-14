@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% data manager for all types of data %%%
-function [NaN]=SPDManager(varargin)
+function [NaN]=viewEISCAT(varargin)
 if isempty(varargin)
   clear global
 end
@@ -12,23 +12,42 @@ addpath_before_start;
 if isempty(varargin)
   dataset=[];
   datasetinfo=[];
-  datasetinfo.EISCAT.filemode = "manual";
-  datasetinfo.EISCAT.antenna = 'UHF';
+  
   % Project name which is shown in the data file name
   datasetinfo.projname='EISCAT/Swarm';
-  % Set parameters to be fetched (refer to initial files)
+  
+  % Set EISCAT experiment time range
+  dt_fr = datenum([2021 02 09 00 00 00]);
+  dt_to = datenum([2021 02 09 05 00 00]);
+  datelist=getdatelist(1, dt_fr, dt_to);
+  
+  % Set Swarm pass time
+  dt_swarm = datenum([2021 02 09 04 06 00]);
+  drawopt.addlines = add_swarm_overpass(dt_swarm)
+    
+  
+  % set the mode to select the analyzed results: "manual" - a dialog box
+  % will open and select the data folder manually; "autoselect": search 
+  % /kaappi/EISCAT/RESULTS and select the data folder automatically.
+  datasetinfo.EISCAT.filemode = "manual";
+  
+  datasetinfo.EISCAT.antenna = 'UHF'; % if filemode is "autoselect" must be specified.
+  datasetinfo.EISCAT.pulsecode = 'beata'; % if filemode is "autoselect" must be specified.
+  
+  % Set parameters to be retrieved (refer to initial files)
   datasetinfo.paralist={'ne_lv0', 'Te_lv0', 'Ti_lv0', 'vi_lv0'};
 
-  datasetinfo.save=0; % 0 - no save; 1 - save
+  datasetinfo.save=0; % 0 - no save; 1 - save retrieved data
   
   % Set plotting pannels
-  drawopt.order={1, 2, 3, 4};
-  drawopt.plottype=nan(size(drawopt.order));
+  drawopt.order={1, 2, 3, 4}; % order of the panels to show in the figure for the parameters in datasetinfo.paralist
+  % drawopt.plottype=nan(size(drawopt.order));
   drawopt.visual='on';
-  drawopt.figureclose=0;
+  drawopt.figureclose=0; % 0 - keep fig in screen; 1- close figure after saving
   drawopt.figure.position=[1 1 20 25];
+  drawopt.FigureFormat = {'png'};
   drawopt.save=1;
-  drawopt.addlines=getadditionallines(1);
+  % drawopt.addlines=getadditionallines(1);
   
   drawopt.xunit='UT';
 elseif length(varargin)==1
@@ -39,8 +58,6 @@ elseif length(varargin)==1
   drawopt=varargin{2};
 end
 
-% Set dates
-datelist=getdatelist(1);
 
 % Fetch and plot
 for i=1:size(datelist,1)
@@ -72,7 +89,7 @@ end
 end
 
 
-function [datelist]=getdatelist(id)
+function [datelist]=getdatelist(id, varargin)
 
   if id==0
     prompt='Input starting date and time, e.g., [2005 09 01 00 00 00]:\n';
@@ -83,8 +100,13 @@ function [datelist]=getdatelist(id)
     dv=input(prompt);
     ed_dn=datenum(dv);
   elseif id==1
-    st_dn=datenum([2021 02 09 00 00 00]);
-    ed_dn=datenum([2021 02 09 04 00 00]);
+    if isempty(varargin)
+        st_dn=datenum([2021 02 09 00 00 00]);
+        ed_dn=datenum([2021 02 09 04 00 00]);
+    else
+        st_dn = varargin{1};
+        ed_dn = varargin{2};
+    end
   elseif id==2
     dns=getdnlist(2); % dns in column
     st_time=[00 00 00 16 00 00]; % [HH MM SS];
