@@ -16,6 +16,12 @@ catch
 end
 
 try
+    antenna = datasetinfo.EISCAT.sitename;
+catch
+    antenna = 'UHF';
+end
+
+try
     pulsecode = datasetinfo.EISCAT.pulsecode;
 catch
     pulsecode = 'beata';
@@ -48,10 +54,6 @@ if strcmp(filemode,  'EISCAT_cdt')
         fp_root=[pwd '/EISCAT_cdt/dat_cmb/'];
         cd(pwd1)
     end
-    
-    if strcmp(sitename, 'UHF')
-        sitename = 'TRO';
-    end
 
     dstr = datestr(dn, 'yyyymmdd');
 
@@ -77,16 +79,24 @@ elseif strcmp(filemode, 'autoselect')
     ix = regexp(fps, [datestr(dn, 'yyyy-mm-dd') '_' pulsecode]);
     ix = ~cellfun('isempty', ix);
     fps = fps(ix);
-    ix = regexp(fps, lower(sitename));
+    ix = regexp(fps, lower(antenna));
     ix = ~cellfun('isempty', ix);
-    fps = fps(ix);
-    
+    fp = fps(ix);
+    fp = fp{1};
+    combine_mat14;
+    datasetinfo.EISCAT.antenna = name_ant;
+    datasetinfo.EISCAT.pulsecode = name_expr;
+    datasetinfo.EISCAT.sitename = fn_site;
 elseif strcmp(filemode, 'manual')
     filterSpec=[pwd '/*.mat'];
     [filenamein,pathname]=uigetfile(filterSpec,'Select any file in the wanted DIRECTORY');
     if filenamein==0; return, end
     nfd=1;
     fp=pathname;
+    combine_mat14;
+    datasetinfo.EISCAT.antenna = name_ant;
+    datasetinfo.EISCAT.pulsecode = name_expr;
+    datasetinfo.EISCAT.sitename = fn_site;
 end
     
 

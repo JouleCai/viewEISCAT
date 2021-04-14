@@ -12,11 +12,13 @@ addpath_before_start;
 if isempty(varargin)
   dataset=[];
   datasetinfo=[];
+  datasetinfo.EISCAT.filemode = "manual";
+  datasetinfo.EISCAT.antenna = 'UHF';
   % Project name which is shown in the data file name
   datasetinfo.projname='EISCAT/Swarm';
   % Set parameters to be fetched (refer to initial files)
-  datasetinfo.paralist={'Ne_lv0', 'Te_lv0', 'Ti_lv0', 'vi_lv0'};
-  datasetinfo.sitename = 'UHF';
+  datasetinfo.paralist={'ne_lv0', 'Te_lv0', 'Ti_lv0', 'vi_lv0'};
+
   datasetinfo.save=0; % 0 - no save; 1 - save
   
   % Set plotting pannels
@@ -25,6 +27,7 @@ if isempty(varargin)
   drawopt.visual='on';
   drawopt.figureclose=0;
   drawopt.figure.position=[1 1 20 25];
+  drawopt.FigureFormat = {'png'};
   drawopt.save=1;
   drawopt.addlines=getadditionallines(1);
   
@@ -81,8 +84,8 @@ function [datelist]=getdatelist(id)
     dv=input(prompt);
     ed_dn=datenum(dv);
   elseif id==1
-    st_dn=datenum([2020 02 18 17 00 00]);
-    ed_dn=datenum([2020 02 18 24 00 00]);
+    st_dn=datenum([2021 02 09 00 00 00]);
+    ed_dn=datenum([2021 02 09 04 00 00]);
   elseif id==2
     dns=getdnlist(2); % dns in column
     st_time=[00 00 00 16 00 00]; % [HH MM SS];
@@ -117,7 +120,7 @@ function [dns]=getdnlist(id)
       2016 11 08;
       2016 11 16;
       2013 02 08;]);
-    elseif id==2;
+    elseif id==2
     fn=[pwd '/events/' 'event_dates1.dat'];
     fid=fopen(fn);
     C=textscan(fid,'%s');
@@ -130,7 +133,7 @@ end
 function lines=getadditionallines(varargin)
   lines={1,NaN,[69.58 69.58],struct('LineStyle',':');   ...
          2,NaN,[69.58 69.58],struct('LineStyle',':','Color',[0 0 0]);   ...
-         0,[22.54 22.54],NaN,struct('Color',[0.7 0 0]);   ...
+         0,[2.3 2.3],NaN,struct('Color',[0.7 0 0]);   ...
          0,[23.46 23.46],NaN,struct('Color',[0.7 0 0]);   ...
          0,[22.79 22.79],NaN,[];   ...
          0,[23.57 23.57],NaN,[];       ...

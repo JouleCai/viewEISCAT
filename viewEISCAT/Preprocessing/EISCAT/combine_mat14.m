@@ -1,4 +1,4 @@
-function [ res_path, filenameout ] = combine_mat14( fp )
+
 %%%%%% combine GUISDAP analyzed data into a single file
 %%%%%% Input: pathlist - the path list of the GUISDAP data files
 %%%%%% Output: Combined files in folder "dat_cmb"
@@ -97,6 +97,7 @@ r_XMITloc=data.r_XMITloc;
 r_RECloc=data.r_RECloc;
 r_SCangle=data.r_SCangle;
 name_expr=data.name_expr;
+name_ant = data.name_ant;
 r_ver=data.r_ver;
 switch data.name_site
   case 'T'
@@ -124,12 +125,12 @@ end
 %[height_pp(:,1),lat_pp(:,1),lon_pp(:,1)]=loc2gg_mat(site,ran_pp(:,1),az(1),el(1));
 
 % Other profiles
-for i=2:npf,
+for i=2:npf
 	ind=0;
-	for j=1:i-1,		
+	for j=1:i-1	
 		if (az(i)==az(j) && el(i)==el(j)); ind=j; end		
 	end
-	if ind~=0;
+	if ind~=0
 		height(:,i)=height(:,ind);
 		lat(:,i)=lat(:,ind);
 		lon(:,i)=lon(:,ind);
@@ -150,16 +151,15 @@ stoptime=t1(4,npf)*10000+t1(5,npf)*100+t1(6,npf);
 name_site=data.name_site;
 disp([fn_site ', ' dates])
 
-res_path=[res_root_path fn_site dates(1:6) '/'];
-if ~isdir(res_path)
-  mkdir(res_root_path,[fn_site dates(1:6)]);
-end
+%res_path=[res_root_path fn_site dates(1:6) '/'];
+%if ~isdir(res_path)
+%  mkdir(res_root_path,[fn_site dates(1:6)]);
+%end
 
-filenameout=[fn_site '_' dates '_cmb' '.mat'];
-eval(['save ',res_path,filenameout,...
-' az el tx_power t1 t2 ran height lat lon n_e ti te coll vel ',...
-'ne_err ti_err te_err coll_err vel_err stat resid comp r_m0 ',...
-'name_site r_XMITloc r_RECloc r_SCangle name_expr r_ver dates starttime stoptime']);
+%filenameout=[fn_site '_' dates '_cmb' '.mat'];
+%eval(['save ',res_path,filenameout,...
+%' az el tx_power t1 t2 ran height lat lon n_e ti te coll vel ',...
+%'ne_err ti_err te_err coll_err vel_err stat resid comp r_m0 ',...
+%'name_site r_XMITloc r_RECloc r_SCangle name_expr r_ver dates starttime stoptime']);
 
-end
 
