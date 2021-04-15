@@ -5,7 +5,7 @@
 %%%%%% Modified by Lei Cai on 31.03.2014
 
 res_root_path=[pwd '/dat_cmb/' ];
-itgtime_lim=30; % threshold for the integration time in second; 
+itgtime_lim=5; % threshold for the integration time in second; 
 
 fl=dir([fp '*.mat']);
 nfiles=length(fl);
@@ -57,7 +57,7 @@ te_err=nan(num_gates,npf);coll_err=nan(num_gates,npf);vel_err=nan(num_gates,npf)
 stat=nan(num_gates,npf);resid=nan(num_gates,npf);
 comp=nan(num_gates,npf);
 
-for i=1:npf,
+for i=1:npf
   ii=ind_pf(i);
  
   data=load([fp fl(ii).name]);
@@ -105,6 +105,7 @@ switch data.name_site
     fn_site='TRO';
   case 'V'
     site=2;
+    fn_site='TRO'
   case 'K'
     site=1;
     fn_site='KIR';

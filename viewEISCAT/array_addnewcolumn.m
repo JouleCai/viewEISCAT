@@ -17,7 +17,8 @@ function [newdata, newcolvec]=array_addnewcolumn(data,colvec,loc,val)
     return
   end
   ncol_val=size(val,2);
-  step=difcol(loc)/ncol_val;
+  %step=difcol(loc)/ncol_val;
+  step = median(difcol)/ncol_val;
   tempvec=1:ncol_val;
   col3=colvec(loc)+step*tempvec;
   

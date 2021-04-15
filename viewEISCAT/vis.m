@@ -306,9 +306,13 @@ for i=1:npnl
       ydata1 = ydata;
       coldif=xdiff;
       colres=xres;
+      if colres*24*60 < 1.5
+          colres = 1.5/24/60;
+      end
       indgaps=find(coldif>1.5*colres); % define the data gap
+      
       for ng=1:length(indgaps)
-        indg=indgaps(ng);
+        indg=indgaps(ng) + (ng-1)*2;
         addval=[zdata1(:,indg) nan(ny,1)];
         [zdata1,xdataz]=array_addnewcolumn(zdata1,xdataz,indg,addval);
         if size(ydata, 2) == size(zdata, 2)
@@ -756,8 +760,18 @@ if isfield(drawopt,'addlines')
       if ~isempty(drawopt.addlines{ii,4})
       opt_tmp=drawopt.addlines{ii,4};
       for fldn=fieldnames(opt_tmp)'
+          if strcmp(fldn,'message')
+              continue
+          end
         opt_line.(fldn{1})=opt_tmp.(fldn{1});
       end
+      end
+      if isfield(opt_tmp, 'message')
+          text('String',opt_tmp.message,        ...
+              'unit','normalized',  ...
+              'position',[(xline(1)-hal.XLim(1))/diff(hal.XLim) -0.04],     ...
+              'HorizontalAlignment','center','VerticalAlignment','middle',  ...
+              'fontsize',fontsize_axes, 'Color', opt_line.Color);
       end
     end
     if ~isfinite(xline)
@@ -774,7 +788,6 @@ if isfield(drawopt,'addlines')
       hp.(fldn{1})=opt_line.(fldn{1});
     end
     set(hal,'visible','off')
-    hold off
   end
 end
 

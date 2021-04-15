@@ -17,13 +17,19 @@ if isempty(varargin)
   datasetinfo.projname='EISCAT/Swarm';
   
   % Set EISCAT experiment time range
-  dt_fr = datenum([2021 03 04 23 00 00]);
-  dt_to = datenum([2021 03 05 03 00 00]);
+  dt_fr = datenum([2021 03 09 23 00 00]);
+  dt_to = datenum([2021 03 10 03 00 00]);
   datelist=getdatelist(1, dt_fr, dt_to);
   
-  % Set Swarm pass time
-  dt_swarm = datenum([2021 03 05 01 38 00]);
-  drawopt.addlines = add_swarm_overpass(dt_swarm, dt_fr);
+  % Set Swarm trajectory parameters
+  swarm_id = "A";
+  dt_swarm = datenum([2021 03 10 01 18 10]);
+  add_swarm_overpass(dt_swarm, dt_fr, swarm_id);
+
+  
+  swarm_id = 'B';
+  dt_swarm = datenum([2021 03 10 01 34 14]);
+  add_swarm_overpass(dt_swarm, dt_fr, swarm_id);
     
   
   % set the mode to select the analyzed results: "manual" - a dialog box
@@ -151,10 +157,32 @@ function [dns]=getdnlist(id)
   
 end
 
-function lines = add_swarm_overpass(dt, dt_fr)
+function [] = add_swarm_overpass(dt, dt_fr, id, varargin)
+    global drawopt
+    
+    if ~isfield(drawopt, 'addlines')
+        drawopt.addlines = {};
+    end
+
+    if strcmp(id, 'B')
+        color = [0.145, 0.615, 0.180];
+    elseif strcmp(id.extract(1), 'A') || strcmp(id.extract(1), 'C')
+        color = [0.615, 0.145, 0.486];
+    end
+    linewidth = 2;
+    if ~isempty(varargin)
+        if length(varargin) >= 1
+            color = varargin{1};
+        elseif length(varargin) >= 2
+            linewidth = 2;
+        end
+    end
+    
+    
     h24 = (dt -floor(dt_fr))*24;
-    lines = {0,[h24 h24],NaN,   ...
-        struct('LineStyle', '--', 'LineWidth', 2, 'Color',[0.8 0 0])};
+    drawopt.addlines = [drawopt.addlines;   ...
+        {0,[h24 h24],NaN,   ...
+        struct('LineStyle', '--', 'LineWidth', 2, 'Color',color, 'message', id)}];
 end
 
 function lines=getadditionallines(varargin)
