@@ -23,9 +23,9 @@ awid=drawopt.axes.awid;
 
 hf=figure;
 set(gcf,'Units',unifig,'Position',posfig,'DefaultAxesFontSize',fontsize_axes,...
-  'DefaultAxesTickDir','out','DefaultTextFontSize',fontsize_text,'UserData',[],...
+  'DefaultAxesTickDir','in','DefaultTextFontSize',fontsize_text,'UserData',[],...
   'DefaultAxesXGrid','on','DefaultAxesYGrid','on','DefaultAxesYMinorTick','on',...
-  'DefaultAxesXMinorTick','off','defaultaxesbox','on',...
+  'DefaultAxesXMinorTick','on','defaultaxesbox','on',...
   'DefaultAxesTickLength',[0.02 0.035],...
   'PaperType','A4','PaperOrientation',paperort,...
   'PaperUnits','centimeters', 'PaperPosition',paperpos,...
@@ -649,35 +649,39 @@ for i=1:npnl
   
   % add y label
   haa=gca;
-  ha1(i)=axes('unit','normalized','position',[ax(i) ay(i) awid(i) ahei(i)]);
+  % ha1(i)=axes('unit','normalized','position',[ax(i) ay(i) awid(i) ahei(i)]);
   text('String',Ylabel,'unit','normalized','position',[-0.12 0.5],   ...
     'Rotation',90,'VerticalAlignment','bottom','fontsize',fontsize_text)
-  set(gca,'visible','off')
+  
+  % set x minortick
+  haa.XAxis.MinorTickValues = xminortick;
+  %set(gca,'visible','off')
   set(gcf,'currentaxes',haa)
   
+  
   % add x minor ticks
-  haa=gca;  
-  tllen=get(gca,'ticklength');
-  Ylim=get(gca,'Ylim');
-  mtk_scale=tllen(1);
-  xxx=reshape([xminortick;xminortick;nan(size(xminortick));   ...
-    xminortick;xminortick;nan(size(xminortick));], ...
-    length(xminortick)*6,1);
-  ymtklen=ones(size(xminortick))*diff(Ylim)*mtk_scale;
-  yyy=reshape([Ylim(2)*ones(size(ymtklen));Ylim(2)-ymtklen;nan(size(ymtklen));    ...
-    Ylim(1)+ymtklen;Ylim(1)*ones(size(ymtklen));nan(size(ymtklen))],   ...
-    length(xminortick)*6,1);
-  ha1(i)=axes('unit','normalized','position',[ax(i) ay(i) awid(i) ahei(i)]);
-  hold on
-  plot(xxx,yyy,'k-','linewidth',0.5)
-  set(gca,                              ...
-        'xlim',         Xlim,           ...
-        'ylim',         Ylim,           ...
-        'xtick',        Xlim,           ...
-        'ytick',        Ylim)
-  hold off
-  set(gca,'visible','off')
-  set(gcf,'currentaxes',haa)
+%   haa=gca;  
+%   tllen=get(gca,'ticklength');
+%   Ylim=get(gca,'Ylim');
+%   mtk_scale=tllen(1);
+%   xxx=reshape([xminortick;xminortick;nan(size(xminortick));   ...
+%     xminortick;xminortick;nan(size(xminortick));], ...
+%     length(xminortick)*6,1);
+%   ymtklen=ones(size(xminortick))*diff(Ylim)*mtk_scale;
+%   yyy=reshape([Ylim(2)*ones(size(ymtklen));Ylim(2)-ymtklen;nan(size(ymtklen));    ...
+%     Ylim(1)+ymtklen;Ylim(1)*ones(size(ymtklen));nan(size(ymtklen))],   ...
+%     length(xminortick)*6,1);
+%   ha1(i)=axes('unit','normalized','position',[ax(i) ay(i) awid(i) ahei(i)]);
+%   hold on
+%   plot(xxx,yyy,'k-','linewidth',0.5)
+%   set(gca,                              ...
+%         'xlim',         Xlim,           ...
+%         'ylim',         Ylim,           ...
+%         'xtick',        Xlim,           ...
+%         'ytick',        Ylim)
+%   hold off
+%   set(gca,'visible','off')
+%   set(gcf,'currentaxes',haa)
   
 end
 
@@ -740,8 +744,8 @@ if isfield(drawopt,'addlines')
     if ind_ha==0
       hal=axes('position',[ha(end).Position(1:3)    ...
         ha(1).Position(2)-ha(end).Position(2)+ha(1).Position(4)]);
-      hal.Position(2) = hal.Position(2) -0.04;
-      hal.Position(4) = hal.Position(4) + 0.08;
+      hal.Position(2) = hal.Position(2) -0.02;
+      hal.Position(4) = hal.Position(4) + 0.04;
       hal.XLim=ha(1).XLim;
       hal.YLim=ha(1).YLim;
     else
@@ -777,17 +781,17 @@ end
 %% add title
 ha_title=axes('unit','normalized','position',[ax(1) ay(1) awid(1) ahei(1)],'visible','off');
 if floor(t_st)==floor(t_ed)
-  Title=[datasetinfo.projname ': ' datasetinfo.EISCAT.sitename ', ' ...
-      datasetinfo.EISCAT.antenna ', ' datasetinfo.EISCAT.pulsecode ', '     ...
-      datestr(t_st,'yyyy-mm-dd HH:MM') '-' datestr(t_ed,'HH:MM') ' UT'];
+  Title = {[datasetinfo.projname ': '     ...
+      datestr(t_st,'yyyy-mm-dd HH:MM') '-' datestr(t_ed,'HH:MM') ' UT'],    ...
+      strrep(datasetinfo.EISCAT.key, '_', '-')};
 else
-  Title=[datasetinfo.projname ': '  datasetinfo.EISCAT.sitename ', ' ...
-      datasetinfo.EISCAT.antenna ', ' datasetinfo.EISCAT.pulsecode ', '     ...
+  Title={[datasetinfo.projname ': ' ...
       datestr(t_st,'yyyy-mm-dd HH:MM') 	...
-    ' - ' datestr(t_ed,'yyyy-mm-dd HH:MM') ' UT'];
+    ' - ' datestr(t_ed,'yyyy-mm-dd HH:MM') ' UT'],  ...
+    strrep(datasetinfo.EISCAT.key, '_', '-')};
 end
-text('String',Title,'unit','normalized','position',[0.5 1.08],		...
-  'HorizontalAlignment','center','VerticalAlignment','bottom','fontsize',fontsize_axes);
+text('String',Title,'unit','normalized','position',[0.5 1.2],		...
+  'HorizontalAlignment','center','VerticalAlignment','middle','fontsize',fontsize_axes);
 set(gcf,'currentaxes',ha(1))
 %% save and print
 if ~isfield(drawopt,'save')
@@ -802,15 +806,13 @@ if drawopt.save==1
   if floor(t_st)==floor(t_ed)
     fn=[prefn '_'     ...
        datestr(t_st,'yyyymmdd_HHMM') 	...
-      '-' datestr(t_ed,'HHMM') '_' datasetinfo.EISCAT.sitename '_' ...
-      datasetinfo.EISCAT.antenna '_' datasetinfo.EISCAT.pulsecode ];
+      '-' datestr(t_ed,'HHMM') '_' datasetinfo.EISCAT.key];
   else
     fn=[prefn '_' datestr(t_st,'yyyymmdd_HHMM') 	...
-      '-' datestr(t_ed,'yyyymmdd_HHMM') '_' datasetinfo.EISCAT.sitename '_' ...
-      datasetinfo.EISCAT.antenna '_' datasetinfo.EISCAT.pulsecode ];
+      '-' datestr(t_ed,'yyyymmdd_HHMM') '_' datasetinfo.EISCAT.key];
   end
   
-  saveas(hf,[fp_res fn ],'fig');
+  saveas(hf,[fp_res fn '.fig'],'fig');
   opt_print={'png','tiff'};
   if isfield(drawopt,'FigureFormat')
     opt_print=drawopt.FigureFormat;
@@ -819,11 +821,11 @@ if drawopt.save==1
     figformat=opt_print{nn};
     switch figformat
       case 'tiff' 
-        print(hf, '-dtiff','-r300',[fp_res fn])
+        print(hf, '-dtiff','-r300',[fp_res fn '.tiff'])
       case 'png'
-        print(hf, '-dpng','-r500',[fp_res fn]);
+        print(hf, '-dpng','-r500',[fp_res fn '.png']);
       case 'eps'
-        print(hf, '-depsc','-r600',[fp_res fn]);
+        print(hf, '-depsc','-r600',[fp_res fn '.eps']);
     end
   end
 end

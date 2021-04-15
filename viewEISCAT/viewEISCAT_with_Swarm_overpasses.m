@@ -17,13 +17,13 @@ if isempty(varargin)
   datasetinfo.projname='EISCAT/Swarm';
   
   % Set EISCAT experiment time range
-  dt_fr = datenum([2021 02 09 00 00 00]);
-  dt_to = datenum([2021 02 09 05 00 00]);
+  dt_fr = datenum([2021 03 04 23 00 00]);
+  dt_to = datenum([2021 03 05 03 00 00]);
   datelist=getdatelist(1, dt_fr, dt_to);
   
   % Set Swarm pass time
-  dt_swarm = datenum([2021 02 09 04 06 00]);
-  drawopt.addlines = add_swarm_overpass(dt_swarm);
+  dt_swarm = datenum([2021 03 05 01 38 00]);
+  drawopt.addlines = add_swarm_overpass(dt_swarm, dt_fr);
     
   
   % set the mode to select the analyzed results: "manual" - a dialog box
@@ -151,8 +151,8 @@ function [dns]=getdnlist(id)
   
 end
 
-function lines = add_swarm_overpass(dt)
-    h24 = (dt -floor(dt))*24;
+function lines = add_swarm_overpass(dt, dt_fr)
+    h24 = (dt -floor(dt_fr))*24;
     lines = {0,[h24 h24],NaN,   ...
         struct('LineStyle', '--', 'LineWidth', 2, 'Color',[0.8 0 0])};
 end

@@ -87,8 +87,15 @@ elseif strcmp(filemode, 'autoselect')
     datasetinfo.EISCAT.antenna = name_ant;
     datasetinfo.EISCAT.pulsecode = name_expr;
     datasetinfo.EISCAT.sitename = fn_site;
+    
+    if isfile([fp '/gfd_setup.m'])
+        datasetinfo.EISCAT.key = get_EISCAT_key(fp);
+    else
+        datasetinfo.EISCAT.key = [fn_site '_' name_ant '_' name_expr];
+    end
 elseif strcmp(filemode, 'manual')
     filterSpec=[pwd '/*.mat'];
+    filterSpec=['/kaappi/EISCAT/RESULTS/*.mat'];
     [filenamein,pathname]=uigetfile(filterSpec,         ... 
         [datestr(dn, 'yyyy-mm-dd')  ...
          ',Select any *.mat file in the GUISDAP result folder:']);
@@ -99,6 +106,11 @@ elseif strcmp(filemode, 'manual')
     datasetinfo.EISCAT.antenna = name_ant;
     datasetinfo.EISCAT.pulsecode = name_expr;
     datasetinfo.EISCAT.sitename = fn_site;
+    if isfile([fp '/gfd_setup.m'])
+        datasetinfo.EISCAT.key = get_EISCAT_key(fp);
+    else
+        datasetinfo.EISCAT.key = [fn_site '_' name_ant '_' name_expr];
+    end
 end
     
 
@@ -164,3 +176,11 @@ end
   ISR.alt = height;
   
 end
+
+function txt=get_EISCAT_key(fp)
+    run([fp '/gfd_setup.m'])
+    s = regexp(data_path, '/', 'split');
+    
+    txt = s{end};
+end
+    

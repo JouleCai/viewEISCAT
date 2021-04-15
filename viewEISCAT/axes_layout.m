@@ -33,9 +33,9 @@ else
 
   ax=zeros(npnl,1);ay=zeros(npnl,1);ahei=zeros(npnl,1);awid=zeros(npnl,1);
   
-  tothei=0.85;
+  tothei=0.8;
   spheiscale=2/3;
-  x0=0.165;y0=0.95; wid0=0.65;
+  x0=0.165;y0=0.9; wid0=0.65;
   %ahei0=tothei/(npnl-nsppnl+spheiscale*nsppnl);
   ahei0 = tothei/sum(drawopt.axes_height_scale);
   for i=1:npnl

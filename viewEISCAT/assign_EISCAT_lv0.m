@@ -19,7 +19,8 @@ for i=1:npara
 end
 
 %% load data
-for dn=floor(dateran(1)-0.5):floor(dateran(2)-0.5)
+% for dn=floor(dateran(1)-0.5):floor(dateran(2)-0.5)
+for dn=floor(dateran(1)):floor(dateran(2))
   if dn==floor(dateran(2)) && dateran(2)==floor(dateran(2)) 
     continue
   end
@@ -44,7 +45,7 @@ for dn=floor(dateran(1)-0.5):floor(dateran(2)-0.5)
     para{i}.val=[para{i}.val val];
     para{i}.tl=[para{i}.tl tl];
     para{i}.err=[para{i}.err err];
-    para{i}.alt=alt;
+    para{i}.alt=[para{i}.alt alt];
 
   end
 end
