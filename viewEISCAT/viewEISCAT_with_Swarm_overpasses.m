@@ -17,18 +17,18 @@ if isempty(varargin)
   datasetinfo.projname='EISCAT/Swarm';
   
   % Set EISCAT experiment time range
-  dt_fr = datenum([2021 03 09 23 00 00]);
-  dt_to = datenum([2021 03 10 03 00 00]);
+  dt_fr = datenum([2020 11 21 22 00 00]);
+  dt_to = datenum([2020 11 22 01 00 00]);
   datelist=getdatelist(1, dt_fr, dt_to);
   
   % Set Swarm trajectory parameters
   swarm_id = "A";
-  dt_swarm = datenum([2021 03 10 01 18 10]);
+  dt_swarm = datenum([2020 11 22 00 27 00]);
   add_swarm_overpass(dt_swarm, dt_fr, swarm_id);
 
   
-  swarm_id = 'B';
-  dt_swarm = datenum([2021 03 10 01 34 14]);
+  swarm_id = "B";
+  dt_swarm = datenum([2020 11 21 21 29 21]);
   add_swarm_overpass(dt_swarm, dt_fr, swarm_id);
     
   
@@ -164,7 +164,7 @@ function [] = add_swarm_overpass(dt, dt_fr, id, varargin)
         drawopt.addlines = {};
     end
 
-    if strcmp(id, 'B')
+    if strcmp(id.extract(1), 'B')
         color = [0.145, 0.615, 0.180];
     elseif strcmp(id.extract(1), 'A') || strcmp(id.extract(1), 'C')
         color = [0.615, 0.145, 0.486];

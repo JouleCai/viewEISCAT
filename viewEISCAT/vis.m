@@ -624,7 +624,7 @@ for i=1:npnl
     
     hax = gca;
     labels = string(hax.YAxis.TickLabels); % extract
-    if length(labels) > 3
+    if length(labels) > 4
         labels(2:2:end) = nan; % remove every other one
     end
     Yticklabel = labels;
@@ -654,7 +654,7 @@ for i=1:npnl
   % add y label
   haa=gca;
   % ha1(i)=axes('unit','normalized','position',[ax(i) ay(i) awid(i) ahei(i)]);
-  text('String',Ylabel,'unit','normalized','position',[-0.12 0.5],   ...
+  text('String',Ylabel,'unit','normalized','position',[-0.15 0.5],   ...
     'Rotation',90,'VerticalAlignment','bottom','fontsize',fontsize_text)
   
   % set x minortick

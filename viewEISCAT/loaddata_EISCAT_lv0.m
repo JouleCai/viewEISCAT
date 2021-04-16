@@ -125,7 +125,7 @@ end
   resid=resid(:,ind);
   ti_err=ti_err(:,ind);
   
-  ind2=find(stat>0);
+  ind2=find(stat>1);
   ne(ind2)=nan;
   ti(ind2)=nan;
   te(ind2)=nan;

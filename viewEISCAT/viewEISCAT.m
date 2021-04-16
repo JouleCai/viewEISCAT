@@ -17,8 +17,8 @@ if isempty(varargin)
   datasetinfo.projname='EISCAT';
   
   % Set EISCAT experiment time range
-  dt_fr = datenum([2021 02 09 00 00 00]);
-  dt_to = datenum([2021 02 09 05 00 00]);
+  dt_fr = datenum([2021 03 23 08 00 00]);
+  dt_to = datenum([2021 03 23 20 00 00]);
   datelist=getdatelist(1, dt_fr, dt_to);
     
   
